@@ -1,0 +1,2 @@
+En esta carpeta se encuentran el código que escribí en el [video sobre herramientas de medición](https://youtu.be/-NmHne_108c).
+Es sólo una función recursiva que calcula la secuencia de Fibonacci, con el objetivo de mostrar el uso de la clase Stopwatch para cronometrar procesos.
