@@ -14,7 +14,9 @@ namespace WolvesAndRabbitsSimulation.Engine
         private const int width = 255;
         private const int height = 255;
         private Size size = new Size(width, height);
-        private GameObject[] objects = new GameObject[0];
+        private HashSet<GameObject> objects = new HashSet<GameObject>();
+        private List<GameObject>[,] grid = new List<GameObject>[width, height];
+
 
         public IEnumerable<GameObject> GameObjects
         {
@@ -42,22 +44,54 @@ namespace WolvesAndRabbitsSimulation.Engine
             return rnd.Next(min, max);
         }
 
+        private List<GameObject> GetBucketAt(Point pos)
+        {
+            return grid[PositiveMod(pos.X, width), PositiveMod(pos.Y, height)];
+        }
+
+        private List<GameObject> InitBucketAt(Point pos)
+        {
+            var bucket = new List<GameObject>();
+            grid[PositiveMod(pos.X, width), PositiveMod(pos.Y, height)] = bucket;
+            return bucket;
+        }
+
         public void Add(GameObject obj)
         {
-            objects = objects.Concat(new GameObject[] { obj }).ToArray();
+            objects.Add(obj);
+            var bucket = GetBucketAt(obj.Position);
+            if (bucket == null)
+            {
+                bucket = InitBucketAt(obj.Position);
+            }
+            bucket.Add(obj);
         }
 
         public void Remove(GameObject obj)
         {
-            objects = objects.Where(o => o != obj).ToArray();
+            objects.Remove(obj);
+            var bucket = GetBucketAt(obj.Position);
+            if (bucket != null)
+            {
+                bucket.Remove(obj);
+            }
         }
 
         public virtual void Update()
         {
             foreach (GameObject obj in GameObjects)
             {
+                Point old = obj.Position;
                 obj.UpdateOn(this);
                 obj.Position = PositiveMod(obj.Position, size);
+                if (!obj.Position.Equals(old))
+                {
+                    GetBucketAt(old).Remove(obj);
+                    if (objects.Contains(obj))
+                    {
+                        Add(obj);
+                    }
+                }
             }
         }
 
@@ -89,14 +123,9 @@ namespace WolvesAndRabbitsSimulation.Engine
 
         public IEnumerable<GameObject> ObjectsAt(Point pos)
         {
-            return GameObjects.Where(each =>
-            {
-                Rectangle bounds = each.Bounds;
-                PointF center = new PointF((bounds.Left + bounds.Right - 1) / 2.0f,
-                                           (bounds.Top + bounds.Bottom - 1) / 2.0f);
-                return Dist(pos, center) <= bounds.Width / 2.0f
-                    && Dist(pos, center) <= bounds.Height / 2.0f;
-            });
+            var bucket = GetBucketAt(pos);
+            if (bucket == null) return new GameObject[0];
+            return bucket;
         }
     }
 }

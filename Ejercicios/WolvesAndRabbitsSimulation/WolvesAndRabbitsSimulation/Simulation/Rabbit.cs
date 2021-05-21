@@ -28,23 +28,17 @@ namespace WolvesAndRabbitsSimulation.Simulation
 
         public override void UpdateOn(World forest)
         {
-            EatSomeGrass(forest);
+            EatSomeGrass(forest as Forest);
             Breed(forest);
             GrowOld(forest);
             ConsumeFood(forest);
             Wander(forest);
         }
 
-        private void EatSomeGrass(World forest)
+        private void EatSomeGrass(Forest forest)
         {
-            Grass grass = forest.ObjectsAt(Position).Select(o => o as Grass).First(o => o != null);
-            int amount = FOOD_CONSUMPTION * 2;
-            if (grass.Growth < amount)
-            {
-                amount = grass.Growth;
-            }
-            grass.Growth -= amount;
-            food += amount;
+            short grass = forest.RemoveGrassAt(Position, (short)(FOOD_CONSUMPTION * 2));
+            food += grass;
         }
 
         private void Breed(World forest)

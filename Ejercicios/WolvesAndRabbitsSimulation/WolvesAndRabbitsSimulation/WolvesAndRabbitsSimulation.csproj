@@ -56,6 +56,7 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Simulation\Forest.cs" />
     <Compile Include="Simulation\Grass.cs" />
     <Compile Include="Simulation\Rabbit.cs" />
     <EmbeddedResource Include="Form1.resx">

@@ -17,7 +17,7 @@ namespace WolvesAndRabbitsSimulation
     public partial class Form1 : Form
     {
         private const int scale = 3;
-        private World world = new World();
+        private World world = new Forest();
         private long frameCount = 0;
         private long frameTime = 0;
         private string fileName;
@@ -51,7 +51,7 @@ namespace WolvesAndRabbitsSimulation
 
         private void InitializeWorld()
         {
-            FillWithGrass();
+            //FillWithGrass();
             SpawnSomeRabbits();
         }
 
