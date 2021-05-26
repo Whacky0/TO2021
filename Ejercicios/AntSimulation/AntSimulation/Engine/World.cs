@@ -48,21 +48,21 @@ namespace AntSimulation
         public void Add(GameObject obj)
         {
             objects.Add(obj);
-            var bucket = GetbucketAt(obj.Position);
-            if (bucket==null)
+            var tile = GetTile(obj.Position);
+            if (tile==null)
             {
-                bucket = InitBacketAt(obj.Position);
+                tile = Tile(obj.Position);
             }
-            bucket.Add(obj);
+            tile.Add(obj);
         }
 
         public void Remove(GameObject obj)
         {
             objects.Remove(obj);
-            var bucket = GetbucketAt(obj.Position);
-            if (bucket!=null)
+            var tile = GetTile(obj.Position);
+            if (tile!=null)
             {
-                bucket.Remove(obj);
+               tile.Remove(obj);
             }
 
         }
@@ -78,7 +78,7 @@ namespace AntSimulation
                 obj.Position = Mod(obj.Position, size);
                 if (!obj.Position.Equals(old))
                 {
-                    GetbucketAt(old).Remove(obj);
+                    GetTile(old).Remove(obj);
                     if (objects.Contains(obj))
                     {
                         Add(obj);
@@ -119,22 +119,22 @@ namespace AntSimulation
             return new Point(Mod(p.X, s.Width), Mod(p.Y, s.Height));
         }
         
-        public IEnumerable<GameObject> GameObjectsNear(Point pos, float dist = 1)
+        public IEnumerable<GameObject> GameObjectsNear(Point pos)
         {
-            var bucket = GetbucketAt(pos);
-            if (bucket == null) return new GameObject[0];
-            return bucket;
+            var Tile = GetTile(pos);
+            if (Tile == null) return new GameObject[0];
+            return Tile;
         }
 
-        private List<GameObject> GetbucketAt(Point pos)
+        private List<GameObject> GetTile(Point pos)
         {
             return grid[Mod(pos.X, width), Mod(pos.Y, height)];
         }
-        private List<GameObject> InitBacketAt(Point pos)
+        private List<GameObject> Tile(Point pos)
         {
-            var bucket = new List<GameObject>();
-            grid[Mod(pos.X, width), Mod(pos.Y, height)] = bucket;
-            return bucket;
+            var Tile = new List<GameObject>();
+            grid[Mod(pos.X, width), Mod(pos.Y, height)] = Tile;
+            return Tile;
         }
 
 
