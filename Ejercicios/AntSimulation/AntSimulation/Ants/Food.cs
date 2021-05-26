@@ -9,15 +9,15 @@ namespace AntSimulation
 {
     class Food : GameObject
     {
-        public static void SpawnOn(World world, PointF center, float amount = 100)
+        public static void SpawnOn(World world, Point center, float amount = 100)
         {
-            float radius = (float)Math.Round(Math.Sqrt(amount) / 2);
-            for (float x = center.X - radius; x <= center.X + radius; x++)
+            int radius = (int)Math.Round(Math.Sqrt(amount) / 2);
+            for (int x = center.X - radius; x <= center.X + radius; x++)
             {
-                for (float y = center.Y - radius; y <= center.Y + radius; y++)
+                for (int y = center.Y - radius; y <= center.Y + radius; y++)
                 {
                     Food f = new Food();
-                    f.Position = new PointF(x, y);
+                    f.Position = new Point(x, y);
                     world.Add(f);
                 }
             }

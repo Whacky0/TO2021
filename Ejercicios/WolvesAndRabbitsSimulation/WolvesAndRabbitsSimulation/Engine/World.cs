@@ -16,7 +16,7 @@ namespace WolvesAndRabbitsSimulation.Engine
         private Size size = new Size(width, height);
         private GameObject[] objects = new GameObject[0];
 
-        public IEnumerable<GameObject> GameObjects
+        public ICollection  <GameObject> GameObjects
         {
             get
             {
@@ -45,11 +45,20 @@ namespace WolvesAndRabbitsSimulation.Engine
         public void Add(GameObject obj)
         {
             objects = objects.Concat(new GameObject[] { obj }).ToArray();
+            
         }
 
         public void Remove(GameObject obj)
         {
-            objects = objects.Where(o => o != obj).ToArray();
+
+            foreach (var objectss in objects)
+            {
+                if (objectss != obj)
+                {
+                    GameObjects.Remove(objectss);
+                }
+            }
+            
         }
 
         public virtual void Update()
@@ -59,6 +68,7 @@ namespace WolvesAndRabbitsSimulation.Engine
                 obj.UpdateOn(this);
                 obj.Position = PositiveMod(obj.Position, size);
             }
+            
         }
 
         public virtual void DrawOn(Graphics graphics)

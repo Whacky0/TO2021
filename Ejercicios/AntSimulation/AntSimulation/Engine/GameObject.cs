@@ -9,14 +9,14 @@ namespace AntSimulation
 {
     abstract class GameObject
     {
-        private PointF position = new PointF(0,0);
+        private Point position = new Point(0,0);
         private double rotation = 0;
         private Color color = Color.Black;
         private long lastUpdate = 0;
 
         public virtual long UpdateInterval { get { return 10; } }
 
-        public PointF Position
+        public Point Position
         {
             get { return position; }
             set { position = value; }
@@ -62,7 +62,7 @@ namespace AntSimulation
         public void Forward(float dist)
         {
             //(direction degreeCos @ direction degreeSin) *distance + location
-            Position = new PointF((int)Math.Round(Math.Cos(rotation) * dist + Position.X),
+            Position = new Point((int)Math.Round(Math.Cos(rotation) * dist + Position.X),
                                   (int)Math.Round(Math.Sin(rotation) * dist + Position.Y));
         }
 

@@ -14,7 +14,7 @@ namespace WolvesAndRabbitsSimulation.Simulation
         private int ADULTHOOD = 100;
         private int FOOD_TO_BREED = 100;
         private int FOOD_CONSUMPTION = 25;
-        private int MAX_CHILDREN = 30;
+        private int MAX_CHILDREN =1;
         private double BREED_PROBABILITY = 0.3;
         private double DEATH_PROBABILITY = 0.5;
 
@@ -58,7 +58,7 @@ namespace WolvesAndRabbitsSimulation.Simulation
                     {
                         Rabbit bunny = new Rabbit();
                         bunny.Position = Position;
-                        forest.Add(bunny);
+                        forest.Add(bunny);                      
                     }
                 }
             }

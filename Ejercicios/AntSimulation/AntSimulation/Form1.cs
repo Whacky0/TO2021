@@ -50,7 +50,7 @@ namespace AntSimulation
         {
             for (int j = 0; j < 3; j++)
             {
-                PointF random;
+                Point random;
                 do
                 {
                     random = world.RandomPoint();

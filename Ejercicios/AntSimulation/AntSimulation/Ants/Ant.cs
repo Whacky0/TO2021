@@ -99,15 +99,15 @@ namespace AntSimulation
             }
         }
 
-        private IEnumerable<T> FindNear<T>(World world, float radius) where T : GameObject
+        private IEnumerable<T> FindNear<T>(World world, int radius) where T : GameObject
         {
             List<T> result = new List<T>();
-            for (float x = Position.X - radius; x <= Position.X + radius; x++)
+            for (int x = Position.X - radius; x <= Position.X + radius; x++)
             {
-                for (float y = Position.Y - radius; y <= Position.Y + radius; y++)
+                for (int y = Position.Y - radius; y <= Position.Y + radius; y++)
                 {
                     result.AddRange(world
-                        .GameObjectsNear(new PointF(x, y))
+                        .GameObjectsNear(new Point(x, y))
                         .Select(t => t as T)
                         .Where(t => t != null));
                 }

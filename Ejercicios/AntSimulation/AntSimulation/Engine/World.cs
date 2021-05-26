@@ -14,14 +14,15 @@ namespace AntSimulation
         private const int width = 125;
         private const int height = 125;
         private Size size = new Size(width, height);
-        private List<GameObject> objects = new List<GameObject>();
+        private HashSet<GameObject> objects = new HashSet<GameObject>();
+        private List<GameObject>[,] grid = new List<GameObject>[width, height];
 
         public IEnumerable<GameObject> GameObjects { get { return objects.ToArray(); } }
 
         public int Width { get { return width; } }
         public int Height { get { return height; } }
 
-        public PointF Center { get { return new PointF(width / 2, height / 2); } }
+        public Point Center { get { return new Point(width / 2, height / 2); } }
 
         public bool IsInside(PointF p)
         {
@@ -29,9 +30,9 @@ namespace AntSimulation
                 && p.Y >= 0 && p.Y < height;
         }
         
-        public PointF RandomPoint()
+        public Point RandomPoint()
         {
-            return new PointF(rnd.Next(width), rnd.Next(height));
+            return new Point(rnd.Next(width), rnd.Next(height));
         }
 
         public float Random()
@@ -47,19 +48,42 @@ namespace AntSimulation
         public void Add(GameObject obj)
         {
             objects.Add(obj);
+            var bucket = GetbucketAt(obj.Position);
+            if (bucket==null)
+            {
+                bucket = InitBacketAt(obj.Position);
+            }
+            bucket.Add(obj);
         }
 
         public void Remove(GameObject obj)
         {
             objects.Remove(obj);
+            var bucket = GetbucketAt(obj.Position);
+            if (bucket!=null)
+            {
+                bucket.Remove(obj);
+            }
+
         }
 
         public void Update()
         {
             foreach (GameObject obj in GameObjects)
             {
+                Point old = obj.Position;
+                obj.UpdateOn(this);
+                obj.Position = Mod(obj.Position, size);
                 obj.InternalUpdateOn(this);
                 obj.Position = Mod(obj.Position, size);
+                if (!obj.Position.Equals(old))
+                {
+                    GetbucketAt(old).Remove(obj);
+                    if (objects.Contains(obj))
+                    {
+                        Add(obj);
+                    }
+                }
             }
         }
 
@@ -83,22 +107,37 @@ namespace AntSimulation
         }
 
         // http://stackoverflow.com/a/10065670/4357302
-        private static float Mod(float a, float n)
+        private static int Mod(int a, int n)
         {
-            float result = a % n;
+            int result = a % n;
             if ((a < 0 && n > 0) || (a > 0 && n < 0))
                 result += n;
             return result;
         }
-        private static PointF Mod(PointF p, SizeF s)
+        private static Point Mod(Point p, Size s)
         {
-            return new PointF(Mod(p.X, s.Width), Mod(p.Y, s.Height));
+            return new Point(Mod(p.X, s.Width), Mod(p.Y, s.Height));
         }
         
-        public IEnumerable<GameObject> GameObjectsNear(PointF pos, float dist = 1)
+        public IEnumerable<GameObject> GameObjectsNear(Point pos, float dist = 1)
         {
-            return GameObjects.Where(t => Dist(t.Position, pos) < dist);
+            var bucket = GetbucketAt(pos);
+            if (bucket == null) return new GameObject[0];
+            return bucket;
         }
+
+        private List<GameObject> GetbucketAt(Point pos)
+        {
+            return grid[Mod(pos.X, width), Mod(pos.Y, height)];
+        }
+        private List<GameObject> InitBacketAt(Point pos)
+        {
+            var bucket = new List<GameObject>();
+            grid[Mod(pos.X, width), Mod(pos.Y, height)] = bucket;
+            return bucket;
+        }
+
+
 
     }
 }

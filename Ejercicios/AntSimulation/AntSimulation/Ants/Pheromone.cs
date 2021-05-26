@@ -9,7 +9,7 @@ namespace AntSimulation
 {
     class Pheromone : GameObject
     {
-        public static void SpawnOn(World world, PointF pos, double intensity = 100)
+        public static void SpawnOn(World world, Point pos, double intensity = 100)
         {
             if (intensity > 100) { intensity = 100; }
 
@@ -73,17 +73,17 @@ namespace AntSimulation
 
         private void SpreadOn(World world)
         {
-            float radius = 2;
-            for (float x = Position.X - radius; x <= Position.X + radius; x++)
+            int radius = 2;
+            for (int x = Position.X - radius; x <= Position.X + radius; x++)
             {
-                for (float y = Position.Y - radius; y <= Position.Y + radius; y++)
+                for (int y = Position.Y - radius; y <= Position.Y + radius; y++)
                 {
                     if (x == Position.X && y == Position.Y) continue;
                     double squaredDist = Math.Pow(x - Position.X, 2) + Math.Pow(y - Position.Y, 2);
                     if (squaredDist <= radius)
                     {
                         double diffuse = 0.75;
-                        SpawnOn(world, new PointF(x, y), intensity * diffuse);
+                        SpawnOn(world, new Point(x, y), intensity * diffuse);
                     }
                 }
             }
