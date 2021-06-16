@@ -25,6 +25,8 @@ namespace Game
         private bool shieldActivated = false;
         private float speed = MIN_SPEED;
 
+        
+
 
         public PlayerShip(int shipIndex)
         {
@@ -33,6 +35,8 @@ namespace Game
 
             EventHandler.KeyDown += OnKeyDown;
             EventHandler.KeyUp += OnKeyUp;
+
+            MiImagen = LoadImage();
 
             cannon = new Cannon();
             cannon.Center = Center;
@@ -131,28 +135,38 @@ namespace Game
 
         private bool CheckForCollision()
         {
-            IEnumerable<EnemyShip> collisions = AllObjects
-                .Where((m) => CollidesWith(m))
-                .Select((m) => m as EnemyShip)
-                .Where((m) => m != null);
-            if (collisions.Count() == 0) return false;
-            foreach (EnemyShip enemy in collisions)
+
+            EnemyShip[] EnemyCollisions = AllObjects.Select(m => m as EnemyShip).Where(m => m != null).ToArray();
+
+            if (EnemyCollisions.Count() == 0) return false;
+
+            foreach (var enemy in EnemyCollisions)
             {
-                enemy.Explode();
+                if (CollidesWith(enemy))
+                {
+                    enemy.Explode();
+                    return true;
+                }
             }
-            return true;
+            return false;
         }
 
         private void CheckForPowerUps()
         {
-            IEnumerable<PowerUp> pups = AllObjects
-                .Where((m) => CollidesWith(m))
-                .Select((m) => m as PowerUp);
+
+            PowerUp[] pups = AllObjects.Select(m => m as PowerUp).ToArray();
 
             foreach (PowerUp pup in pups)
             {
-                if (pup != null) { pup.ApplyOn(this); }
+                if (pup != null)
+                {
+                    if (CollidesWith(pup))
+                    {
+                        pup.ApplyOn(this);
+                    }
+                }
             }
+
         }
 
         private void KeepInsideOwner()
@@ -174,19 +188,20 @@ namespace Game
                 cannon.Shoot();
             }
         }
-        
-        public override void DrawOn(Graphics graphics)
+
+        Image MiImagen;
+        public override void DrawOn(Graphics graphics)//Manda a dibujarme
         {
-            graphics.DrawImage(LoadImage(), Bounds);
+            graphics.DrawImage(MiImagen, Bounds);
         }
-        
-        private Image LoadImage()
+
+        private Image LoadImage()//Carga las imagenes y me devuelve la mia
         {
             Image[] ships = Spritesheet.Load(@"Resources\shipsheetparts.png", new Size(200, 200));
-            foreach (Image img in ships)
-            {
-                img.RotateFlip(RotateFlipType.Rotate270FlipNone);
-            }
+            ships[shipIndex].RotateFlip(RotateFlipType.Rotate270FlipNone);
+            ships[shipIndex].RotateFlip(RotateFlipType.Rotate270FlipNone);
+            ships[shipIndex].RotateFlip(RotateFlipType.Rotate270FlipNone);
+            ships[shipIndex].RotateFlip(RotateFlipType.Rotate270FlipNone);
             Image result = ships[shipIndex];
             result.RotateFlip(RotateFlipType.RotateNoneFlipX);
             Extent = new SizeF(result.Size.Width / 2, result.Size.Height / 2);

@@ -48,7 +48,7 @@ namespace Game
 
         public override void DrawOn(Graphics graphics)
         {
-            FillScreenTiled(graphics);
+           //FillScreenTiled(graphics);
         }
 
         public void FillScreenTiled(Graphics graphics)
