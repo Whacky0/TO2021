@@ -1,6 +1,6 @@
 En esta carpeta encontrarán el código de una pequeña aplicación que simula el comportamiento de un grupo de comerciantes que todos los días recorren la misma ruta desde su pueblo natal hasta la ciudad capital para ofrecer sus mercancías.
 
-Los comerciantes están representados como un punto amarillo. Los pueblos como un cuadrado rojo. Y la capital como un cuadrado más grande de color rojo y amarillo con una cruz en el medio. El mapa se genera aleatoriamente al inicial la aplicación y cuenta con distintos tipos de terreno, los cuales dificultan o facilitan el recorrido de los comerciantes.
+Los comerciantes están representados como un punto amarillo. Los pueblos como un cuadrado rojo. Y la capital como un cuadrado más grande de color rojo y amarillo con una cruz en el medio. El mapa se genera aleatoriamente al iniciar la aplicación y está compuesto por distintos tipos de terreno, los cuales dificultan o facilitan el recorrido de los comerciantes.
 
 Esta implementación está construida de forma intencionalmente ineficiente.
 
