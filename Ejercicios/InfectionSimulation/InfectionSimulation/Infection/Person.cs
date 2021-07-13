@@ -9,17 +9,31 @@ namespace InfectionSimulation
 {
     class Person : GameObject
     {
+        
+
         public bool Infected { get; set; }
+        
+
+        public IEnumerable<Person> near
+        {
+            get
+           {
+                 World world = new World();
+             return world.ObjectsAt(Position).Cast<Person>();
+            }
+
+        }
 
         public override void UpdateOn(World world)
         {
-            IEnumerable<Person> near = world.ObjectsAt(Position).Cast<Person>();
+          //  IEnumerable<Person> near= world.ObjectsAt(Position).Cast<Person>();
             if (Infected)
             {
                 Color = Color.Red;
                 foreach (Person p in near)
                 {
                     p.Infected = true;
+                    
                 }
             }
             else
@@ -33,6 +47,7 @@ namespace InfectionSimulation
 
             Forward(world.Random(1, 2));
             Turn(world.Random(-25, 25));
+
         }
         
     }

@@ -14,7 +14,7 @@ namespace InfectionSimulation
         private const int width = 300;
         private const int height = 300;
         private Size size = new Size(width, height);
-        private List<GameObject> objects = new List<GameObject>();
+        private HashSet<GameObject> objects = new HashSet<GameObject>();
 
         public IEnumerable<GameObject> GameObjects {
             get
