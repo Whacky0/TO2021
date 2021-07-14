@@ -59,10 +59,12 @@ namespace InfectionSimulation
             long end = Environment.TickCount;
             RegisterFrameTime(end - begin);
 
+
             Text = string.Format("Objects: {0}, Average FPS: {1:00}, Current FPS: {2:00}",
                 world.GameObjects.Count(),
                 1000.0 / (frameTime / frameCount),
                 1000.0 / (end - begin));
+
         }
 
         private void RegisterFrameTime(long time)
