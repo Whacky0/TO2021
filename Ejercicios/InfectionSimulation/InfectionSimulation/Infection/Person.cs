@@ -39,8 +39,6 @@ namespace InfectionSimulation
             else
             {
                 Color = Color.Green;
-
-
             }
 
             Forward(world.Random(1, 2));
